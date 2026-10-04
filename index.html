@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bacia em Jogo: Conselho das Águas</title>
+  <meta name="description" content="Jogo educativo e rápido de negociação sobre o uso da água em uma bacia hidrográfica.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a class="pular-conteudo" href="#conteudo">Ir para o conteúdo</a>
+
+<main id="conteudo">
+
+  <!-- ===================== TELA 1: MENU ===================== -->
+  <section id="tela-menu" class="tela ativa" aria-labelledby="titulo-jogo">
+    <div class="menu-capa">
+      <div class="menu-texto">
+        <h1 id="titulo-jogo">Bacia em Jogo</h1>
+        <p class="subtitulo">Conselho das Águas</p>
+        <p class="chamada">Sete setores, uma única bacia e água que não dá para todos. Em até 20 minutos, negociem um acordo que a bacia aguente.</p>
+        <nav class="menu-botoes" aria-label="Menu principal">
+          <button class="btn btn-primario" id="btn-iniciar" type="button">Iniciar partida</button>
+          <button class="btn" id="btn-como-jogar" type="button">Como jogar</button>
+          <button class="btn" id="btn-creditos" type="button">Créditos e referências</button>
+        </nav>
+        <p class="aviso-cenario">Cenário didático e hipotético. Os valores do jogo não são medições reais.</p>
+      </div>
+
+      <figure class="menu-ilustracao" aria-label="Ilustração de uma bacia hidrográfica">
+        <svg viewBox="0 0 480 360" role="img" aria-labelledby="ilus-titulo">
+          <title id="ilus-titulo">Bacia hidrográfica com montanhas, rio e floresta</title>
+          <path class="ilus-ceu" d="M0 0h480v360H0z"/>
+          <path class="ilus-montanha" d="M0 170 80 80 150 150 230 60 320 150 400 90 480 160V360H0z"/>
+          <path class="ilus-vale" d="M0 230C90 200 160 250 240 235s170-40 240-10V360H0z"/>
+          <path class="ilus-afluente" d="M90 120C110 160 140 190 190 215"/>
+          <path class="ilus-afluente" d="M390 125C370 165 330 195 290 222"/>
+          <path class="ilus-rio" d="M230 62C225 120 260 150 235 200s-40 70 10 110 10 50 5 50"/>
+          <g class="ilus-arvores">
+            <circle cx="60" cy="270" r="16"/><circle cx="95" cy="285" r="13"/><circle cx="410" cy="268" r="17"/>
+            <circle cx="445" cy="290" r="13"/><circle cx="150" cy="300" r="12"/><circle cx="340" cy="305" r="14"/>
+          </g>
+          <circle class="ilus-sol" cx="395" cy="45" r="22"/>
+        </svg>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ===================== TELA 2: PREPARAÇÃO ===================== -->
+  <section id="tela-preparacao" class="tela" aria-labelledby="titulo-preparacao">
+    <header class="tela-cabecalho">
+      <button class="btn btn-voltar" type="button" data-voltar="menu">Voltar</button>
+      <h2 id="titulo-preparacao">Preparação da reunião</h2>
+    </header>
+
+    <blockquote class="convocacao">
+      Você foi convocado para participar de uma reunião do Conselho da Bacia. Cada representante possui necessidades e interesses próprios. A missão é construir um acordo que permita o uso sustentável da água e reduza o conflito.
+    </blockquote>
+
+    <div class="prep-layout">
+      <article class="cartao" aria-labelledby="titulo-conflito">
+        <h3 id="titulo-conflito">O conflito</h3>
+        <p id="texto-conflito"></p>
+        <dl class="dados-iniciais">
+          <div><dt>Água disponível</dt><dd><span id="prep-agua">0</span> UA</dd></div>
+          <div><dt>Demanda total</dt><dd><span id="prep-demanda">0</span> UA</dd></div>
+          <div><dt>Déficit inicial</dt><dd><span id="prep-deficit">0</span> UA</dd></div>
+        </dl>
+        <p class="nota">UA é a unidade de água da simulação. Valores fictícios e editáveis no arquivo jogo.js.</p>
+      </article>
+
+      <article class="cartao" aria-labelledby="titulo-config">
+        <h3 id="titulo-config">Configurar a partida</h3>
+        <div class="campo">
+          <label for="sel-jogadores">Número de jogadores</label>
+          <select id="sel-jogadores">
+            <option>4</option><option>5</option><option selected>6</option><option>7</option><option>8</option>
+          </select>
+        </div>
+        <div class="campo">
+          <label for="sel-cenario">Intensidade da escassez</label>
+          <select id="sel-cenario">
+            <option value="moderada">Moderada</option>
+            <option value="severa" selected>Severa</option>
+            <option value="critica">Crítica</option>
+          </select>
+        </div>
+        <p class="nota">Com menos de sete jogadores, alguns representam mais de um setor, mantendo os interesses separados. Duração total: cerca de 19 minutos.</p>
+      </article>
+    </div>
+
+    <section aria-labelledby="titulo-personagens">
+      <h3 id="titulo-personagens">Quem representa quem</h3>
+      <div class="grade-personagens" id="grade-personagens"></div>
+    </section>
+
+    <div class="acoes-rodape">
+      <button class="btn" type="button" id="btn-sortear">Sortear de novo</button>
+      <button class="btn btn-primario" type="button" id="btn-comecar">Começar a reunião</button>
+    </div>
+  </section>
+
+  <!-- ===================== TELA 3: NEGOCIAÇÃO ===================== -->
+  <section id="tela-negociacao" class="tela" aria-labelledby="titulo-negociacao">
+    <header class="barra-topo">
+      <h2 id="titulo-negociacao">Sala de negociação</h2>
+      <ol class="etapas" id="etapas" aria-label="Fases da reunião">
+        <li data-fase="1">Interesses</li>
+        <li data-fase="2">Distribuição</li>
+        <li data-fase="3">Estratégias</li>
+        <li data-fase="4">Votação</li>
+      </ol>
+      <div class="relogio">
+        <span class="relogio-rotulo">Tempo da fase</span>
+        <strong id="relogio-tempo">03:00</strong>
+        <button class="btn btn-mini" type="button" id="btn-pausar">Pausar</button>
+        <button class="btn btn-mini" type="button" id="btn-cancelar-partida">Encerrar partida</button>
+      </div>
+    </header>
+
+    <div class="sala-layout">
+
+      <!-- Coluna esquerda: indicadores -->
+      <aside class="coluna coluna-esq" aria-label="Indicadores da bacia">
+        <div class="cartao">
+          <h3>Água da rodada</h3>
+          <div class="termometro" role="img" aria-label="Água distribuída em relação à disponível">
+            <div class="termometro-nivel" id="nivel-agua"></div>
+          </div>
+          <p><strong id="agua-disponivel">0</strong> UA disponíveis · <strong id="agua-distribuida">0</strong> UA distribuídas</p>
+          <p class="alerta" id="alerta-deficit" hidden></p>
+        </div>
+        <div class="cartao">
+          <h3>Indicadores</h3>
+          <div class="indicadores" id="painel-indicadores"></div>
+        </div>
+      </aside>
+
+      <!-- Coluna central -->
+      <div class="coluna coluna-centro">
+        <div class="cartao palco" aria-live="polite">
+          <p class="fala-autor" id="fala-autor">André Ribeiro, mediador</p>
+          <p class="fala-texto" id="fala-texto"></p>
+          <div class="palco-acoes">
+            <button class="btn btn-primario" type="button" id="btn-avancar">Avançar</button>
+          </div>
+        </div>
+
+        <!-- Fase 1 -->
+        <div class="cartao" id="bloco-interesses">
+          <h3>Posição ou interesse?</h3>
+          <p class="nota">A posição é o que o setor diz querer. O interesse é o que precisa acontecer para o conflito estar resolvido. Cada jogador lê a ficha do seu setor em voz alta.</p>
+          <div class="lista-interesses" id="lista-interesses"></div>
+        </div>
+
+        <!-- Fase 2 -->
+        <div class="cartao" id="bloco-distribuicao" hidden>
+          <h3>Distribuição da água</h3>
+          <div class="tabela-rolagem">
+            <table class="tabela-agua" id="tabela-agua">
+              <thead>
+                <tr>
+                  <th scope="col">Setor</th>
+                  <th scope="col">Demanda</th>
+                  <th scope="col">Recebido</th>
+                  <th scope="col">Atendimento</th>
+                  <th scope="col">Justificativa</th>
+                </tr>
+              </thead>
+              <tbody id="corpo-tabela-agua"></tbody>
+              <tfoot>
+                <tr>
+                  <th scope="row">Total</th>
+                  <td id="total-demanda">0</td>
+                  <td id="total-recebido">0</td>
+                  <td id="total-atendimento">0%</td>
+                  <td id="total-status"></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div class="palco-acoes">
+            <button class="btn" type="button" id="btn-distribuir-proporcional">Distribuir proporcionalmente</button>
+            <button class="btn" type="button" id="btn-priorizar-essenciais">Priorizar usos essenciais</button>
+            <button class="btn btn-primario" type="button" id="btn-confirmar-distribuicao">Propor esta distribuição</button>
+          </div>
+        </div>
+
+        <!-- Fase 3 -->
+        <div class="cartao" id="bloco-estrategias" hidden>
+          <h3>Estratégias para ampliar e usar melhor a água</h3>
+          <p class="nota">Escolham até <strong>3 propostas</strong>, de preferência uma de cada estratégia. Comparem água extra, custo e impacto ambiental.</p>
+          <div class="abas" role="tablist" aria-label="Estratégias">
+            <button role="tab" class="aba ativa" id="aba-A" aria-selected="true" aria-controls="lista-A" data-estrategia="A">A. Água a distribuir</button>
+            <button role="tab" class="aba" id="aba-B" aria-selected="false" aria-controls="lista-B" data-estrategia="B">B. Gestão do uso</button>
+            <button role="tab" class="aba" id="aba-C" aria-selected="false" aria-controls="lista-C" data-estrategia="C">C. Novas fontes</button>
+          </div>
+          <div class="lista-propostas" id="lista-A" role="tabpanel" aria-labelledby="aba-A"></div>
+          <div class="lista-propostas" id="lista-B" role="tabpanel" aria-labelledby="aba-B" hidden></div>
+          <div class="lista-propostas" id="lista-C" role="tabpanel" aria-labelledby="aba-C" hidden></div>
+        </div>
+
+        <!-- Fase 4 -->
+        <div class="cartao" id="bloco-votacao" hidden>
+          <h3>Votação do acordo</h3>
+          <p id="votacao-resumo"></p>
+          <div class="votacao-lista" id="votacao-lista"></div>
+          <p class="nota" id="votacao-placar" aria-live="polite"></p>
+          <div class="palco-acoes">
+            <button class="btn btn-primario" type="button" id="btn-fechar-votacao">Encerrar votação</button>
+          </div>
+        </div>
+
+        <div class="cartao">
+          <h3>Setores na mesa</h3>
+          <div class="roda-personagens" id="roda-personagens"></div>
+        </div>
+      </div>
+
+      <!-- Coluna direita -->
+      <aside class="coluna coluna-dir" aria-label="Propostas e histórico">
+        <div class="cartao">
+          <h3>Propostas na mesa</h3>
+          <ul class="propostas-mesa" id="propostas-mesa">
+            <li class="vazio">Nenhuma proposta na mesa.</li>
+          </ul>
+        </div>
+        <div class="cartao">
+          <h3>Histórico de decisões</h3>
+          <ol class="historico" id="historico" aria-live="polite">
+            <li class="vazio">As decisões aparecem aqui.</li>
+          </ol>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ===================== TELA 4: RESULTADO ===================== -->
+  <section id="tela-resultado" class="tela" aria-labelledby="titulo-resultado">
+    <header class="tela-cabecalho">
+      <h2 id="titulo-resultado">Resultado final</h2>
+    </header>
+
+    <div class="selo-resultado" id="selo-resultado" role="status">
+      <strong id="resultado-titulo">Acordo alcançado</strong>
+      <span id="resultado-resumo"></span>
+    </div>
+
+    <div class="resultado-layout">
+      <article class="cartao">
+        <h3>Distribuição final da água</h3>
+        <div class="tabela-rolagem">
+          <table class="tabela-agua">
+            <thead><tr><th scope="col">Setor</th><th scope="col">Demanda</th><th scope="col">Recebido</th><th scope="col">Atendimento</th></tr></thead>
+            <tbody id="resultado-distribuicao"></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="cartao">
+        <h3>Indicadores finais</h3>
+        <div class="indicadores" id="resultado-indicadores"></div>
+      </article>
+
+      <article class="cartao">
+        <h3>Medidas e novas fontes escolhidas</h3>
+        <ul class="lista-simples" id="resultado-medidas"></ul>
+      </article>
+
+      <article class="cartao">
+        <h3>Impactos ambientais estimados</h3>
+        <ul class="lista-simples" id="resultado-impactos"></ul>
+      </article>
+
+      <article class="cartao largura-total">
+        <h3>Satisfação dos setores</h3>
+        <div class="satisfacao-setores" id="resultado-satisfacao"></div>
+      </article>
+
+      <article class="cartao largura-total">
+        <h3>Relatório das decisões</h3>
+        <ol class="historico" id="resultado-relatorio"></ol>
+      </article>
+
+      <article class="cartao largura-total">
+        <h3>Reflexão sobre a negociação</h3>
+        <ul class="lista-simples" id="resultado-reflexao"></ul>
+      </article>
+    </div>
+
+    <div class="acoes-rodape">
+      <button class="btn" type="button" id="btn-imprimir">Imprimir ou salvar relatório</button>
+      <button class="btn" type="button" id="btn-reiniciar">Nova partida</button>
+      <button class="btn btn-primario" type="button" id="btn-menu-final">Voltar ao menu</button>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== MODAIS ===================== -->
+<div class="modal" id="modal-como-jogar" role="dialog" aria-modal="true" aria-labelledby="titulo-como-jogar" hidden>
+  <div class="modal-caixa">
+    <button class="modal-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+    <h2 id="titulo-como-jogar">Como jogar</h2>
+    <p>De 4 a 8 jogadores representam setores usuários da água, com um mediador. Ninguém vence sozinho: o jogo termina bem quando o acordo é viável, técnico e ambientalmente responsável.</p>
+    <h3>Regras da negociação</h3>
+    <ol>
+      <li>Separe as pessoas do problema: cordial com os colegas, firme com o problema.</li>
+      <li>Foque em interesses, não em posições.</li>
+      <li>Invente opções de ganho mútuo com as estratégias A, B e C.</li>
+      <li>Use critérios objetivos: base técnica, lei e senso de justiça.</li>
+    </ol>
+    <h3>As quatro fases (cerca de 19 minutos)</h3>
+    <ol>
+      <li>Interesses: cada setor apresenta sua ficha.</li>
+      <li>Distribuição: dividir a água sem passar do limite.</li>
+      <li>Estratégias: escolher até 3 propostas para ampliar ou economizar água.</li>
+      <li>Votação: o acordo precisa de maioria e do abastecimento humano garantido.</li>
+    </ol>
+    <p>Se a demanda é maior que a água, é preciso negociar o déficit. Não negociar não é opção: a lei exige gestão integrada e usos múltiplos.</p>
+    <button class="btn btn-primario" type="button" data-fechar>Entendi</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-creditos" role="dialog" aria-modal="true" aria-labelledby="titulo-creditos" hidden>
+  <div class="modal-caixa">
+    <button class="modal-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+    <h2 id="titulo-creditos">Créditos e referências</h2>
+    <p>Jogo educativo desenvolvido para a disciplina Fundamentos da Engenharia Ambiental.</p>
+    <p class="nota">Equipe: <span id="creditos-equipe">inserir nomes do grupo</span> · Professor(a): <span id="creditos-professor">inserir nome</span></p>
+    <h3>Referências</h3>
+    <ul class="lista-simples">
+      <li>PEDROSA, V. A. Método de solução de conflito pelo uso da água. In: Solução de conflitos pelo uso da água, 2017.</li>
+      <li>FISHER, R.; URY, W. Getting to Yes: Negotiating Agreement Without Giving In. 1981.</li>
+      <li>Instituto Internacional da Água de Estocolmo (2008), metodologia de síntese entre usos e fontes de água.</li>
+      <li>Brasil. Política Nacional de Recursos Hídricos (Lei nº 9.433/1997).</li>
+      <li>Resolução CONAMA nº 01/1986.</li>
+      <li><a href="https://rsdjournal.org/index.php/rsd/article/view/16645" target="_blank" rel="noopener">Artigo na revista Research, Society and Development</a></li>
+      <li><a href="https://g1.globo.com/economia/crise-da-agua/noticia/2015/09/universitarios-criam-jogo-virtual-que-ensina-fazer-uso-consciente-da-agua.html" target="_blank" rel="noopener">G1: universitários criam jogo virtual sobre uso consciente da água</a></li>
+    </ul>
+    <p class="nota">Personagens e valores são didáticos e fictícios. Substituir pelas fontes reais do conflito escolhido pelo grupo.</p>
+    <button class="btn btn-primario" type="button" data-fechar>Fechar</button>
+  </div>
+</div>
+
+<div class="modal" id="modal-cancelar" role="dialog" aria-modal="true" aria-labelledby="titulo-cancelar" hidden>
+  <div class="modal-caixa">
+    <button class="modal-fechar" type="button" data-fechar aria-label="Fechar">×</button>
+    <h2 id="titulo-cancelar">Encerrar a partida?</h2>
+    <p>Todo o progresso desta reunião será descartado: distribuição da água, propostas, votos e histórico. Você volta ao menu inicial.</p>
+    <div class="palco-acoes">
+      <button class="btn" type="button" data-fechar>Continuar jogando</button>
+      <button class="btn btn-primario" type="button" id="btn-confirmar-cancelar">Encerrar e voltar ao menu</button>
+    </div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+<script src="jogo.js"></script>
+</body>
+</html>
