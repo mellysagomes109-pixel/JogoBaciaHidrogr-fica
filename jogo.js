@@ -30,7 +30,7 @@ const CONFIG = {
 /* ---------------- PERSONAGENS ----------------
    Troque o campo "nome" pelos nomes do grupo. NÃO altere o "id". */
 const SETORES = [
-  { id: 'energia', nome: 'Melissa Ribeiro', setor: 'Energia elétrica', emoji: '⚡', cor: '#b8901d', demanda: 25, essencial: false,
+  { id: 'energia', nome: 'Mellysa Ribeiro', setor: 'Energia elétrica', emoji: '⚡', cor: '#b8901d', demanda: 25, essencial: false,
     perfil: 'Engenheira que representa os empreendimentos de geração de energia.',
     posicao: 'Preciso manter a vazão para as turbinas.',
     interesse: 'Operar com segurança e sem prejuízo, respeitando os demais usos.',
@@ -45,7 +45,7 @@ const SETORES = [
     posicao: 'A cidade não pode ficar sem água.',
     interesse: 'Abastecimento contínuo, com qualidade e mananciais protegidos.',
     inegociavel: 'Consumo humano.', concessao: 'Reduzir perdas na distribuição e promover consumo consciente.' },
-  { id: 'rural', nome: 'Alexsandro Gonçalves', setor: 'Abastecimento rural', emoji: '🏡', cor: '#9a5f38', demanda: 8, essencial: true,
+  { id: 'rural', nome: 'Davi Gonçalves', setor: 'Abastecimento rural', emoji: '🏡', cor: '#9a5f38', demanda: 8, essencial: true,
     perfil: 'Representante das comunidades rurais e de pequenos produtores.',
     posicao: 'As comunidades rurais não podem ser esquecidas.',
     interesse: 'Acesso seguro e justo à água, longe das redes urbanas.',
